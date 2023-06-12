@@ -1,7 +1,8 @@
 import ItemCount from "../ItemCount/ItemCount"
+import './ItemDetail.css'
 const ItemDetail=({id, nombre, precio, categoria, img, stock, descripcion}) =>{
     return(
-        <article >
+        <div className="item-detail">
             <header >
                 <h2 >
                     {nombre}
@@ -23,7 +24,7 @@ const ItemDetail=({id, nombre, precio, categoria, img, stock, descripcion}) =>{
             <footer>
                 <ItemCount initial={1} stock={10} onAdd={(quantity)=>console.log('cantidad seleccionada', quantity)}></ItemCount>
             </footer>
-        </article>
+        </div>
     )
 }
 

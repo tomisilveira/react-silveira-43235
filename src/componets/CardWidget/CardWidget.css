@@ -1,4 +1,26 @@
-.img{
-    height: 1px; /* ajusta la altura según tus necesidades */
-    width: auto;
-}
+.CardWidget {
+    position: relative;
+  }
+  
+  .CardWidget button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  
+  .CardWidget img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .CardWidget .badge {
+    font-size: 12px;
+    padding: 3px 6px;
+    top: -10px;
+    right: -10px;
+  }
+  

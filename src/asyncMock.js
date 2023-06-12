@@ -44,3 +44,12 @@ const products = [
       })
     },1000)
   }
+
+  export const getProductsByCategory = (category) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const filteredProducts = products.filter((prod) => prod.categoria === category);
+        resolve(filteredProducts);
+      }, 1000);
+    });
+  };
