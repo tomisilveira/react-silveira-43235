@@ -3,6 +3,7 @@ import Button from "react-bootstrap/esm/Button"
 import { useCart } from "../../context/cartContext"
 import { collection, where, documentId, getDocs, writeBatch } from "firebase/firestore"
 import { db } from "../../services/firebase/firebaseConfig"
+import CheckOutForm from "../CheckOutForm/checkOutForm"
 
 
 
@@ -11,14 +12,12 @@ const Checkout = () => {
     const { cart, totalToPay,clearCart } = useCart()
     const [loading,setLoading]=useState(false)
 
-    const createOrder = async () => {
+    const createOrder = async ({name,phone,email}) => {
         console.log('entro a la comopra')
         setLoading(true)
         const objOrder = {
             buyer: {
-                name: 'tomas',
-                phone: '123',
-                email: 'a@a.com'
+                name,phone,email
             },
             items: cart,
             total: totalToPay
@@ -81,7 +80,7 @@ const Checkout = () => {
         <div>
             <h1>Queda un paso más</h1>
             <h2>formulario</h2>
-            <Button onClick={createOrder} className='Button'>Crear orden de compra!</Button>
+            <CheckOutForm onConfirm={createOrder}/>
         </div>
     )
 }
