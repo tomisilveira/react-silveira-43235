@@ -19,7 +19,6 @@ const ItemDetail=({id, nombre, precio, categoria, img, stock, descripcion}) =>{
             id,nombre,precio
             
         }
-        console.log(id)
         addItem(item,quantity)
     }
 

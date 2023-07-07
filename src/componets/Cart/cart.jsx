@@ -15,7 +15,6 @@ const Cart = () => {
             </div>
         )
     }
-    console.log(cart[totalQuantity])
 
 
     return (
@@ -23,7 +22,9 @@ const Cart = () => {
             {cart.map(p => <ItemCart key={p.id}{...p} />)}
             <h3>Total: ${totalToPay}</h3>
             <Button onClick={() => clearCart()} className='Button'>Limpiar carrito</Button>
-            <Link to='/checkout' className='Option'>Ir a pagar</Link>
+            <Button as={Link} to={`/checkout`} variant="primary">Ir a pagar</Button>
+            <Button as={Link} to={`/`} variant="primary">Seguir comprando</Button>
+            
         </div>
     )
 }

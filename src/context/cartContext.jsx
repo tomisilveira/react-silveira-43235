@@ -35,7 +35,7 @@ export const CartProvider = ({ children }) => {
     const updateTotalToPay = () => {
         let total = 0;
         cart.forEach(prod => {
-            total += prod.quantity * prod.price;
+            total += prod.quantity * prod.precio;
         });
 
         setTotalToPay(total);

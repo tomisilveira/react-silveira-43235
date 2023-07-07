@@ -17,6 +17,7 @@ const ItemListContainer= ({gretting})=>{
            :query(collection(db,'products'),where('categoria','==',categoriaId))
 
 
+
            getDocs(productsRef)
             .then(querySnapshot =>{
                 const productsAdaptados= querySnapshot.docs.map(doc=>{
@@ -29,7 +30,7 @@ const ItemListContainer= ({gretting})=>{
             .finally(()=>{
                 setLoading(false)
             })
-        }, []) 
+        }, [categoriaId]) 
   
 
 
