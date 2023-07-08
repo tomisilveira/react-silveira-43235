@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './checkoutForm.css';
+import './checkOutForm.css';
 import Button from 'react-bootstrap/Button';
 
 const CheckOutForm = ({ onConfirm }) => {
