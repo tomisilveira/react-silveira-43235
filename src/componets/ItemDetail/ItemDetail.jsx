@@ -3,6 +3,7 @@ import ItemCount from "../ItemCount/ItemCount"
 import './ItemDetail.css'
 import {Link} from "react-router-dom"
 import { CartContext } from "../../context/cartContext"
+import Button from "react-bootstrap/esm/Button"
 
 
 const ItemDetail=({id, nombre, precio, categoria, img, stock, descripcion}) =>{
@@ -24,6 +25,7 @@ const ItemDetail=({id, nombre, precio, categoria, img, stock, descripcion}) =>{
 
     return(
         <div className="item-detail">
+            
             <header >
                 <h2 >
                     
@@ -44,10 +46,11 @@ const ItemDetail=({id, nombre, precio, categoria, img, stock, descripcion}) =>{
                 <p>Categoria: {categoria}</p>
             </section>
             <footer>
-                {/* <ItemCount initial={1} stock={10} onAdd={(quantity)=>console.log('cantidad seleccionada', quantity)}></ItemCount> */}
                 {
                     quantityAdded > 0 ? (
-                        <Link to='/cart'>Terminar la compra</Link>
+                        
+                        <Button as={Link} to={`/cart`} variant="primary">Terminar la compra</Button>
+
                     ):(
                         <ItemCount initial={1} stock={stock} onAdd={handleOnAdd}></ItemCount>
                     )

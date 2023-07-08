@@ -1,6 +1,9 @@
+import './itemCart.css'
 import { useNavigate } from 'react-router-dom';
-import { CartContext, useCart } from "../../context/cartContext"
-import Button from 'react-bootstrap/Button';
+import {  useCart } from "../../context/cartContext"
+import { faTrashAlt  } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 
 
 const ItemCart = ({ id, nombre, quantity, precio }) => {
@@ -9,19 +12,25 @@ const ItemCart = ({ id, nombre, quantity, precio }) => {
     const { removeItem } = useCart()
 
     const handleRemoveItem = (e) => {
-        // e.stopPropagation()
         removeItem(id)
     }
     return (
-        <div>
-       ${id}
-       {nombre}
-       {quantity}
-       ${precio}
-       total: {quantity*precio}
-       <Button onClick={() => handleRemoveItem(id)} className='Button'>Limpiar carrito</Button>
+        <div className="ItemCart">
+            <div className="background">
+                <div className="item-info">
+                    <div className="item-name">{nombre}</div>
+                    <div className="item-quantity">Cantidad: {quantity}</div>
+                    <div>Precio unitario: ${precio}</div>
+                    <div className="item-total">Total: {quantity * precio}</div>
+                </div>
+                <FontAwesomeIcon
+                    icon={faTrashAlt}
+                    className="delete-icon"
+                    onClick={handleRemoveItem}
+                />
+            </div>
         </div>
     );
 }
 
-  export default ItemCart
+export default ItemCart

@@ -1,48 +1,47 @@
 import ItemDetail from "../ItemDetail/ItemDetail"
 import { useEffect, useState } from "react"
-import { getProductById } from "../../asyncMock"
 import { useParams } from "react-router-dom"
 import './ItemDetailContainer.css'
- import { db } from '../../services/firebase/firebaseConfig'
- import { getDoc,doc } from "firebase/firestore"
-
-
+import { useAsync } from "../../hooks/useAsync"
+import { getProduct } from "../../services/firebase/firestore/products"
+import { Modal } from 'react-bootstrap';
 
 const ItemDetailContainer = () => {
-    const [producto, setProducto] = useState(null)
-    const [loading, setLoading] = useState(true)
     const { itemId } = useParams()
-    
 
+    const productId = () => getProduct(itemId)
+    const { data: producto, error, loading } = useAsync(productId, itemId)
+
+    const [showLoadingModal, setShowLoadingModal] = useState(true);
 
     useEffect(() => {
-        setLoading(true)
+        if (!loading) {
+            setShowLoadingModal(false);
+        }
+    }, [loading]);
 
-        const productRef = doc(db,'products',itemId)
-        
+    if(loading){
+        return(
+                <Modal show={showLoadingModal} onHide={() => setShowLoadingModal(false)} centered>
+                    <Modal.Body>
+                        <p>Cargando...</p>
+                    </Modal.Body>
+                </Modal>
+            
+        )
+    }
 
-        getDoc(productRef)
-            .then(response => {
-                const data= response.data()
-                
-                const productoAdaptado={id:response.id,...data}
-                
-                setProducto(productoAdaptado)
-                
-                })
-            .catch(error => {
-                console.log(error)
-            })
-            .finally(() => {
-                setLoading(false)
-            })
-
-    }, [itemId])
+    if (error) {
+        return (
+            <h1>Hubo un error</h1>
+        )
+    }
 
     return (
-        <div className='ItemDetailContainer'>
+           <div className='ItemDetailContainer'>
             <ItemDetail {...producto} />
         </div>
+        
     )
 }
 

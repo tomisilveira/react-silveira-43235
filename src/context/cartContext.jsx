@@ -1,5 +1,6 @@
 import { createContext, useState, useContext } from "react";
 import { useEffect } from "react";
+import { Modal, Button } from "react-bootstrap";
 
 
 export const CartContext = createContext({
@@ -10,6 +11,8 @@ export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState([])
     const [totalProductsAdded, setTotalProductsAdded] = useState(0)
     const [totalToPay, setTotalToPay] = useState(0)
+    const [showMessage, setShowMessage] = useState(false);
+
 
     useEffect(() => {
         updateTotalProductsAdded()
@@ -21,7 +24,9 @@ export const CartProvider = ({ children }) => {
         if (!isInCart(item.id)) {
             setCart(prev => [...prev, { ...item, quantity }])
         } else {
-            console.error('Producto ya cargado')
+            setShowMessage(true); // Mostrar mensaje modal si el producto ya está en el carrito
+
+            // console.error('Producto ya cargado')
         }
     }
     const updateTotalProductsAdded = () => {
@@ -55,9 +60,28 @@ export const CartProvider = ({ children }) => {
         return cart.some(prod => prod.id === itemId)
     }
 
+
+    const handleCloseMessage = () => {
+        setShowMessage(false);
+    };
+
     return (
-        <CartContext.Provider value={{ cart, addItem, removeItem, totalToPay, clearCart }}>
+        <CartContext.Provider value={{ cart, addItem, removeItem, totalProductsAdded, totalToPay, clearCart }}>
             {children}
+            {/* Mensaje modal */}
+            <Modal show={showMessage} onHide={handleCloseMessage}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Producto duplicado</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>El producto ya se encuentra en el carrito. Si desea agregar mas productos ingrese al carrito.</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseMessage}>
+                        Cerrar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </CartContext.Provider>
     )
 }

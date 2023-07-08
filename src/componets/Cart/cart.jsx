@@ -1,31 +1,46 @@
-import { useContext } from "react"
-import { CartContext } from "../../context/cartContext"
-import ItemCart from "../ItemCart/itemCart"
+import './cart.css';
+import React, { useContext } from 'react';
+import { CartContext } from '../../context/cartContext';
+import ItemCart from '../ItemCart/itemCart';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 
+
 const Cart = () => {
-    const { cart, clearCart, totalQuantity,totalToPay, total } = useContext(CartContext)
+  const { cart, clearCart, totalProductsAdded, totalToPay, total } = useContext(CartContext);
 
-    if (totalQuantity === 0) {
-        return (
-            <div>
-                <h1>Carrito vacio.</h1>
-                <Link to='/' className='Option'>Productos</Link>
-            </div>
-        )
-    }
-
-
+  if (totalProductsAdded === 0) {
     return (
-        <div>
-            {cart.map(p => <ItemCart key={p.id}{...p} />)}
-            <h3>Total: ${totalToPay}</h3>
-            <Button onClick={() => clearCart()} className='Button'>Limpiar carrito</Button>
-            <Button as={Link} to={`/checkout`} variant="primary">Ir a pagar</Button>
-            <Button as={Link} to={`/`} variant="primary">Seguir comprando</Button>
-            
-        </div>
-    )
-}
-export default Cart
+      <div className="Cart">
+        <h1>Carrito vacio.</h1>
+        <Button as={Link} to={`/`} variant="primary">
+          Vamos a comprar
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="Cart">
+      <div className="card-container">
+        {cart.map((p) => (
+          <ItemCart key={p.id} {...p} />
+        ))}
+      </div>
+      <h3>Total: ${totalToPay}</h3>
+      <div className="button-container">
+        <Button onClick={() => clearCart()} variant="danger">
+          Limpiar carrito
+        </Button>
+        <Button as={Link} to={`/checkout`} variant="success">
+          Ir a pagar
+        </Button>
+        <Button as={Link} to={`/`} variant="primary">
+          Seguir comprando
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export default Cart;

@@ -2,39 +2,41 @@ import "./ItemListContainer.css"
 import ItemList from "../ItemList/ItemList"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { getDocs, collection, query, where } from 'firebase/firestore'
-import { db } from '../../services/firebase/firebaseConfig'
+import { useAsync } from "../../hooks/useAsync"
+import { getProducts } from "../../services/firebase/firestore/products"
+import { Modal } from 'react-bootstrap';
 
-const ItemListContainer= ({gretting})=>{
-    const {categoriaId}=useParams()
-    const [products, setProducts]=useState([])
-    const [loading,setLoading]=useState(true)
+const ItemListContainer = ({ gretting }) => {
+    const { categoriaId } = useParams()
 
- 
-        useEffect(() => {
-           const productsRef=!categoriaId
-           ?collection(db,'products')
-           :query(collection(db,'products'),where('categoria','==',categoriaId))
+    const productsWithCategory = () => getProducts(categoriaId)
+    const { data: products, error, loading } = useAsync(productsWithCategory, [categoriaId])
 
+    const [showLoadingModal, setShowLoadingModal] = useState(true);
 
+    useEffect(() => {
+        if (!loading) {
+            setShowLoadingModal(false);
+        }
+    }, [loading]);
 
-           getDocs(productsRef)
-            .then(querySnapshot =>{
-                const productsAdaptados= querySnapshot.docs.map(doc=>{
-                    const fields=doc.data()
-                    return {id:doc.id, ...fields}
-                });
-                setProducts(productsAdaptados)
-                
-            })
-            .finally(()=>{
-                setLoading(false)
-            })
-        }, [categoriaId]) 
-  
+    if (loading) {
+        return (
+            <Modal show={showLoadingModal} onHide={() => setShowLoadingModal(false)} centered>
+                <Modal.Body>
+                    <p>Cargando...</p>
+                </Modal.Body>
+            </Modal>
+        );
+    }
 
+    if (error) {
+        return (
+            <h1>Error: Vuelva más tarde</h1>
+        );
+    }
 
-    return(
+    return (
         <div>
             <h1 id="titulo">{gretting}</h1>
             <ItemList products={products}></ItemList>
