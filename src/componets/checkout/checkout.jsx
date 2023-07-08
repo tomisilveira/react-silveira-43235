@@ -93,7 +93,7 @@ const Checkout = () => {
               <Modal.Title>Orden generada correctamente</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <h1>Se generó correctamente la orden id: {ordenId}</h1>
+              Se generó correctamente la orden id: {ordenId}
             </Modal.Body>
             <Modal.Footer>
               <Button as={Link} to={`/`} variant="primary">
